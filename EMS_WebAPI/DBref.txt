@@ -1,0 +1,104 @@
+---Tables list
+SELECT name FROM sqlite_master WHERE type='table';
+
+---Create tables
+CREATE TABLE IF NOT EXISTS States(
+	StateCode TEXT PRIMARY KEY,
+	StateName TEXT NOT NULL,
+	NumberOfMPSeats INTEGER NOT NULL
+);
+CREATE TABLE IF NOT EXISTS Parties (
+    PartyCode TEXT PRIMARY KEY,
+    PartyName TEXT NOT NULL,
+    Symbol TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS  Voters (
+    VoterId INTEGER PRIMARY KEY,
+    Name TEXT NOT NULL,
+    Address TEXT NOT NULL,
+    PhotoUrl TEXT,
+    IsApproved BOOLEAN NOT NULL
+);
+CREATE TABLE IF NOT EXISTS Candidates (
+    CandidateId INTEGER PRIMARY KEY,
+    CandidateName TEXT NOT NULL,
+    PartyCode TEXT NOT NULL,
+    StateCode TEXT NOT NULL,
+    FOREIGN KEY (PartyCode) REFERENCES Parties(PartyCode),
+    FOREIGN KEY (StateCode) REFERENCES States(StateCode)
+);
+CREATE TABLE IF NOT EXISTS Votes (
+    VoteId INTEGER PRIMARY KEY,
+    CandidateId INTEGER NOT NULL,
+    VoterId INTEGER NOT NULL,
+    FOREIGN KEY (CandidateId) REFERENCES Candidates(CandidateId),
+    FOREIGN KEY (VoterId) REFERENCES Voters(VoterId)
+);
+
+---Select queries
+SELECT * FROM States;
+SELECT * FROM Parties;
+SELECT * FROM Voters;
+SELECT * FROM Candidates;
+SELECT * FROM Votes;
+
+---Insert queries
+INSERT INTO States (StateCode, StateName, NumberOfMPSeats)
+VALUES
+    ('AP', 'Andhra Pradesh', 25),
+    ('AR', 'Arunachal Pradesh', 2),
+    ('AS', 'Assam', 14),
+    ('BR', 'Bihar', 40),
+    ('CT', 'Chhattisgarh', 11),
+    ('GA', 'Goa', 2),
+    ('GJ', 'Gujarat', 26),
+    ('HR', 'Haryana', 10),
+    ('HP', 'Himachal Pradesh', 4),
+    ('JH', 'Jharkhand', 14),
+    ('KA', 'Karnataka', 28),
+    ('KL', 'Kerala', 20),
+    ('MP', 'Madhya Pradesh', 29),
+    ('MH', 'Maharashtra', 48),
+    ('MN', 'Manipur', 2),
+    ('ML', 'Meghalaya', 2),
+    ('MZ', 'Mizoram', 1),
+    ('NL', 'Nagaland', 1),
+    ('OD', 'Odisha', 21),
+    ('PB', 'Punjab', 13),
+    ('RJ', 'Rajasthan', 25),
+    ('SK', 'Sikkim', 1),
+    ('TN', 'Tamil Nadu', 39),
+    ('TS', 'Telangana', 17),
+    ('TR', 'Tripura', 2),
+    ('UK', 'Uttarakhand', 5),
+    ('UP', 'Uttar Pradesh', 80),
+    ('WB', 'West Bengal', 42);
+INSERT INTO Parties (PartyCode, PartyName, Symbol)
+VALUES
+    ('BJP', 'Bharatiya Janata Party', 'Lotus'),
+    ('INC', 'Indian National Congress', 'Hand'),
+    ('AAP', 'Aam Aadmi Party', 'Broom');
+
+INSERT INTO Voters (Name, Address, PhotoUrl, IsApproved)
+VALUES
+    ('John Doe', '123 Main St', 'http://example.com/photo.jpg', 1);
+INSERT INTO Candidates (CandidateName, PartyCode, StateCode)
+VALUES
+    ('John Candidate', 'BJP', 'UP');
+INSERT INTO Votes (CandidateId, VoterId)
+VALUES
+    (1, 1001);
+
+---Delete 
+DELETE FROM States;
+DELETE FROM Parties;
+DELETE FROM Voters;
+DELETE FROM Candidates;
+DELETE FROM Votes;
+
+---Table drop
+DROP TABLE States;
+DROP TABLE Parties;
+DROP TABLE Voters;
+DROP TABLE Candidates;
+DROP TABLE Votes;
